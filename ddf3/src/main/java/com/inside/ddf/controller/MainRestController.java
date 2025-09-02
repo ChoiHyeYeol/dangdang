@@ -1,0 +1,65 @@
+package com.inside.ddf.controller;
+
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.List;
+
+import org.springframework.ai.chat.client.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.inside.ddf.dto.req.ChatReq;
+import com.inside.ddf.entity.TB_CHAT_LOG;
+import com.inside.ddf.entity.TB_USER;
+import com.inside.ddf.service.MainService;
+
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+
+
+
+@RestController
+@RequiredArgsConstructor
+public class MainRestController {
+
+	@Autowired
+	MainService mainService;
+	
+
+    @PostMapping("/api/model/chat/ask")
+    public void recommend(@RequestBody ChatReq req, HttpSession session){
+    	System.out.println(mainService.getExplainChat(req, session));
+    	//mainService.getChat(req);
+    }
+
+    // 챗봇에 처음 막 진입했을 때.
+    @GetMapping("/api/chat")
+    public void enterChat(HttpSession session) {
+    	TB_USER user= (TB_USER) session.getAttribute("user");
+//    	String Nickname = user.getNickNm();
+//    	return Nickname;
+    	List<TB_CHAT_LOG> chat_log = mainService.getChatLog(user);
+    	for (int i=0; i<chat_log.size();i++) {
+    		System.out.println(chat_log.get(i).getOutputTxt());
+    	}
+    }
+    
+    
+//    @GetMapping("/main")
+//    public ResponseEntity<MainPageResponse> enterMain(HttpSession session) {
+//        TB_USER user = (TB_USER) session.getAttribute("user");
+//        
+//        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+//        MainPageResponse res = mainService.getMainPageData(user.getUserId(), now.toLocalDate(), now);
+//        return ResponseEntity.ok(res);
+//    }
+    
+    
+    
+}

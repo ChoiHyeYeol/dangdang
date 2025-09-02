@@ -1,0 +1,9 @@
+package com.inside.ddf.config;
+
+public class PasswordConfig {
+	@Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(); // BCrypt 해시
+    }
+
+}

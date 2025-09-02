@@ -1,0 +1,75 @@
+package com.inside.ddf.service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.inside.ddf.dto.req.SignupRequest;
+import com.inside.ddf.entity.TB_USER;
+import com.inside.ddf.repository.Rep_USER;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+	@Autowired
+	Rep_USER rep_user;
+	
+	public TB_USER findByIdAndPassword(String userID, String userPassword) {
+		Optional<TB_USER> entity = rep_user.findById(userID);
+		if(!entity.isEmpty()) {
+			TB_USER user = rep_user.findById(userID).get();
+			if (user.getUserPw().equals(userPassword)) return user;
+		}
+		return null;
+		
+		
+	}
+	
+	public Optional<TB_USER> findById(String userID) {
+		return rep_user.findById(userID);
+	}
+	
+
+    private final Rep_USER userRepo;
+
+    /** 임신일 → 임신 주차수(1주차부터) */
+    private int calcPregWeek(LocalDate pregStart, LocalDate today) {
+        if (pregStart == null) return 0;
+        long days = ChronoUnit.DAYS.between(pregStart, today);
+        // 임신 0~6일 → 1주차로 보정
+        int week = (int)(days / 7) + 1;
+        return Math.max(week, 1);
+    }
+
+    @Transactional
+    public void signup(SignupRequest req) {
+        // 1) 중복 아이디 체크
+     
+        // 2) 비밀번호 해싱
+       
+        // 3) 임신 주차 계산(임신일 기준)
+        int pregWeek = calcPregWeek(req.getPregStart(), LocalDate.now());
+
+        // 4) 엔티티 생성/저장
+        TB_USER user = new TB_USER();
+        user.setUserId(req.getUserId());
+        
+        user.setNickNm(req.getNickNm());
+        user.setBirthDt(req.getBirthDt());
+        user.setPregWeek(pregWeek);
+             // 필요시 기본값
+        user.setCreateDt(LocalDate.now());
+        user.setUserType("NORMAL");
+        userRepo.save(user);
+    }
+}
+	
+

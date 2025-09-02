@@ -1,0 +1,5 @@
+package kr.smhrd.movie.controller;
+
+public class MovieController {
+
+}

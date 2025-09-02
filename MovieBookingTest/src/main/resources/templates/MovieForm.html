@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>영화 등록</title>
+   
+</head>
+<body>
+<div class="container">
+    <h2> 영화 등록</h2>
+    
+    <!-- multipart/form-data 추가 -->
+    <form th:action="@{/movies}" method="post" enctype="multipart/form-data">
+        <label>
+            제목
+            <input type="text" name="title" placeholder="영화 제목을 입력하세요">
+        </label>
+        <label>
+            감독
+            <input type="text" name="director" placeholder="감독 이름을 입력하세요">
+        </label>
+        <label>
+            장르
+            <input type="text" name="genre" placeholder="장르를 입력하세요">
+        </label>
+        <label>
+            상영 시간(분)
+            <input type="number" name="runningTime" placeholder="예: 120">
+        </label>
+        <label>
+            상영 여부
+            <select name="screening">
+                <option value="true">상영 중</option>
+                <option value="false">상영 종료</option>
+            </select>
+        </label>
+        <label>
+            포스터 이미지
+            <input type="file" name="imageFile" accept="image/*">
+        </label>
+        <button type="submit">등록</button>
+    </form>
+
+    <a class="link" th:href="@{/movies}">← 목록 보기</a>
+</div>
+</body>
+</html>

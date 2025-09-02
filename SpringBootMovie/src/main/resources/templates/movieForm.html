@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>영화 등록</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9fbfd;
+            color: #333;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 32px;
+        }
+
+        h2 {
+            color: #0064FF;
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #0064FF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #0052cc;
+        }
+
+        .link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #0064FF;
+            text-decoration: none;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>🎬 영화 등록</h2>
+    
+    <!-- multipart/form-data 추가 -->
+    <form th:action="@{/movies}" method="post" enctype="multipart/form-data">
+        <label>
+            제목
+            <input type="text" name="title" placeholder="영화 제목을 입력하세요">
+        </label>
+        <label>
+            감독
+            <input type="text" name="director" placeholder="감독 이름을 입력하세요">
+        </label>
+        <label>
+            장르
+            <input type="text" name="genre" placeholder="장르를 입력하세요">
+        </label>
+        <label>
+            상영 시간(분)
+            <input type="number" name="runningTime" placeholder="예: 120">
+        </label>
+        <label>
+            상영 여부
+            <select name="screening">
+                <option value="true">상영 중</option>
+                <option value="false">상영 종료</option>
+            </select>
+        </label>
+        <label>
+            포스터 이미지
+            <input type="file" name="imageFile" accept="image/*">
+        </label>
+        <button type="submit">등록</button>
+    </form>
+
+    <a class="link" th:href="@{/movies}">← 목록 보기</a>
+</div>
+</body>
+</html>

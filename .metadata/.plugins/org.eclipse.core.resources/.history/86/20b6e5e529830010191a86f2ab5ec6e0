@@ -1,0 +1,5 @@
+package com.inside.ddf.config;
+
+public class PasswordEncoder {
+
+}

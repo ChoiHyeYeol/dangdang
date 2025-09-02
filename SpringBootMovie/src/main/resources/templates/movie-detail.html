@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>영화 상세 정보</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9fbfd;
+            color: #333;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 32px;
+        }
+
+        h2 {
+            color: #0064FF;
+            margin-bottom: 24px;
+        }
+
+        .movie-info {
+            margin-bottom: 20px;
+        }
+
+        .movie-info strong {
+            display: inline-block;
+            width: 100px;
+            color: #555;
+        }
+
+        .poster {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .poster img {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #0064FF;
+            text-decoration: none;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>🎞 영화 상세 정보</h2>
+
+    <div class="movie-info">
+        <p><strong>제목:</strong> <span>영화 제목</span></p>
+        <p><strong>감독:</strong> <span>감독명</span></p>
+        <p><strong>장르:</strong> <span>액션</span></p>
+        <p><strong>상영 시간:</strong> <span>120</span>분</p>
+        <p><strong>상영 여부:</strong> 
+            <span>상영 중</span>
+        </p>
+    </div>
+
+    <div class="poster">
+        <h3>🎨 포스터</h3>
+    </div>
+
+    <a class="link" th:href="@{/movies}">← 목록으로</a>
+</div>
+</body>
+</html>

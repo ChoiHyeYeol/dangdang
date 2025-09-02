@@ -1,0 +1,107 @@
+package com.inside.ddf.service;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.inside.ddf.code.UserType;
+import com.inside.ddf.dto.req.SignupRequest;
+import com.inside.ddf.entity.TB_USER;
+import com.inside.ddf.repository.Rep_USER;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+@RequiredArgsConstructor
+@Service
+public class UserService {
+
+	@Autowired
+	Rep_USER rep_user;
+	
+	public TB_USER findByIdAndPassword(String userID, String userPassword) {
+		Optional<TB_USER> entity = rep_user.findById(userID);
+		if(!entity.isEmpty()) {
+			TB_USER user = rep_user.findById(userID).get();
+			if (user.getUserPw().equals(userPassword)) return user;
+		}
+		return null;
+		
+		
+	}
+	
+	public Optional<TB_USER> findById(String userID) {
+		return rep_user.findById(userID);
+	}
+	
+	
+	
+	
+	private final Rep_USER userRepo;
+    private final PasswordEncoder passwordEncoder;
+
+    /** 임신일 → 임신 주차 계산(1주차부터) */
+    private int calcPregWeek(LocalDate pregStart, LocalDate today) {
+        if (pregStart == null) return 0;
+        long days = ChronoUnit.DAYS.between(pregStart, today);
+        return Math.max(1, (int)(days / 7) + 1);
+    }
+
+    /** user_type 기본값 선택 (엔티티/DB 수정 없이)
+     *  - enum에 'N'이 있으면 UserType.N 사용
+     *  - 없으면 null 저장 (컬럼이 nullable이므로 안전)
+     *  - ★ 컬럼 길이 1이라 'NORMAL' 넣으면 22001 에러 나므로 절대 금지
+     */
+    private UserType pickDefaultUserType() {
+        try {
+            return UserType.valueOf("N"); // enum에 N 상수가 있으면 사용
+        } catch (IllegalArgumentException ex) {
+            return null; // 없으면 null (DB가 허용)
+        }
+    }
+
+    @Transactional
+    public void signup(SignupRequest req) {
+        // 기본 검증
+        if (req.getUserId() == null || req.getUserId().isBlank())
+            throw new IllegalArgumentException("아이디를 입력해 주세요.");
+        if (req.getUserPassword() == null || req.getUserPassword().isBlank())
+            throw new IllegalArgumentException("비밀번호를 입력해 주세요.");
+        if (req.getNickNm() == null || req.getNickNm().isBlank())
+            throw new IllegalArgumentException("닉네임을 입력해 주세요.");
+        if (req.getBirthDt() == null)
+            throw new IllegalArgumentException("생년월일을 입력해 주세요.");
+        if (req.getPregStart() == null)
+            throw new IllegalArgumentException("임신일을 입력해 주세요.");
+
+        // 중복 체크
+        if (userRepo.existsByUserId(req.getUserId()))
+            throw new IllegalArgumentException("이미 사용 중인 아이디입니다.");
+        if (userRepo.existsByNickNm(req.getNickNm()))
+            throw new IllegalArgumentException("이미 사용 중인 닉네임입니다.");
+
+        // 엔티티 채우기 (TB_USER 수정 없이!)
+        TB_USER u = TB_USER.builder()
+                .userId(req.getUserId())
+                .userPw(passwordEncoder.encode(req.getUserPassword())) // BCrypt
+                .nickNm(req.getNickNm())
+                .userNm(req.getNickNm()) // ★ user_nm 은 닉네임 복사로 채움(필수)
+                .birthDt(req.getBirthDt())
+                .pregWeek(calcPregWeek(req.getPregStart(), LocalDate.now()))
+                .userType(pickDefaultUserType()) // ★ 'N' 있으면 N, 없으면 null
+                // create_dt 는 @PrePersist 로 자동(LocalDate.now())
+                .build();
+
+        try {
+            userRepo.save(u);
+        } catch (DataIntegrityViolationException dive) {
+            // unique 제약 등 정리된 메시지
+            throw new IllegalArgumentException("회원가입 저장 중 제약 조건 위반입니다. (아이디/닉네임 중복 등)");
+        }
+    }
+	
+}

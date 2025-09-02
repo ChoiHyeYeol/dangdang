@@ -1,0 +1,5 @@
+package com.inside.ddf.dto;
+
+public class ApiResponse {
+
+}

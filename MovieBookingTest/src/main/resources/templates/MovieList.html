@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>영화 목록</title>
+</head>
+<body>
+<div class="container">
+    <h2> 현재 상영 중인 영화</h2>
+    
+   <table>
+    <thead>
+        <tr>
+            <th>제목</th>
+            <th>감독</th>
+            <th>장르</th>
+            <th>시간</th>
+            <th>상영 여부</th>
+            <th>상세</th> <!-- ✅ 상세 열 추가 -->
+        </tr>
+    </thead>
+   <tbody>
+   		<tr th:each="movie : ${movies}">
+   			<td th:text = "${movie.title}">제목</td>
+   			<td th:text = "${movie.director}">감독</td>
+   			<td th:text = "${movie.genre}">장르</td>
+   			<td th:text = "${movie.runningTime}">시간</td>
+   			<td th:text = "${movie.screening ? '상영중' : '종료'}">상영여부</td>
+   			<td th:text = "${movie.title}">상세 페이지 보기</td>
+  		</tr>
+   </tbody>
+</table>
+
+    <a class="register-btn" th:href="@{/movies/new}">+ 영화 등록</a>
+</div>
+</body>
+</html>

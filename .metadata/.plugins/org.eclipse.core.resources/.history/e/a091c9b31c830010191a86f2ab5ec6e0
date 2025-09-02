@@ -1,0 +1,5 @@
+package com.inside.ddf.dto.req;
+
+public class SignupRequset {
+
+}

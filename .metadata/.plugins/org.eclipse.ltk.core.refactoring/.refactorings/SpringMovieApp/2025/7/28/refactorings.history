@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename compilation unit &apos;kr.smhrd.movieapp.repository.MovieRepasitory.java&apos; to &apos;MovieRepository.java&apos;&#x0D;&#x0A;- Original project: &apos;SpringMovieApp&apos;&#x0D;&#x0A;- Original element: &apos;kr.smhrd.movieapp.repository.MovieRepasitory.java&apos;&#x0D;&#x0A;- Renamed element: &apos;kr.smhrd.movieapp.repository.MovieRepository.java&apos;" description="Rename compilation unit &apos;MovieRepasitory.java&apos;" flags="2" id="org.eclipse.jdt.ui.rename.compilationunit" input="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;kr.smhrd.movieapp.repository{MovieRepasitory.java" name="MovieRepository.java" references="false" stamp="1752144509688" version="1.0"/>
+</session>
