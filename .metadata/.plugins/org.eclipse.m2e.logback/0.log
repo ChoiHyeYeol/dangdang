@@ -5012,3 +5012,5 @@ org.eclipse.wst.sse.core.internal.exceptions.MalformedInputExceptionWithDetail: 
 2025-09-02 14:34:26,732 [Worker-2: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
 2025-09-02 14:34:26,735 [Worker-2: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\smhrd\Documents\workspace-spring-tools-for-eclipse-4.31.0.RELEASE\ddf\src\test\resources
 2025-09-02 14:36:59,387 [Worker-0: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-02 14:36:59,399 [Worker-0: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-02 14:36:59,402 [Worker-0: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\smhrd\Documents\workspace-spring-tools-for-eclipse-4.31.0.RELEASE\ddf\src\test\resources
